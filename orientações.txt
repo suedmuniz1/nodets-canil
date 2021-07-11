@@ -1,0 +1,41 @@
+Como criar um projeto em node/express
+
+-> Crias a pasta do projeto
+-> Acessar a pasta pelo terminal e rodar "npm init" (para gerar o arquivo "package.json");
+-> Rodar o comando "tsc --init" para gerar o arquivo "tsconfig.json"
+-> Abrir o "tsconfig.json" e seguir estes passos:
+    - preencher "target": "es6"
+    - descomentar "rootDir" e preencher: "./src"
+    - descomentar "outDir" e preencher: "./dist"
+    - descomentar "moduleResolution" e preencher: "node"
+
+-> Instalar as dependências:
+    - instalar GLOBALMENTE (-g): "npm install nodemon typescript ts-node"
+    - "npm install express mustache-express dotenv" (pode rodar um "npm install" pra cada também)
+    - "npm install --save-dev @types/express @types/mustache-express @types/node" para instalar os types
+
+-> Criar a pasta "src"
+-> dentro da pasta "src" criar o arquivo "server.ts"
+-> Em "package.json", "script", criar um script para iniciar a aplicação, ex.: "start-dev": "nodemon -e ts,json,mustache src/server.ts"
+
+
+EXEMPLO DE PRIMEIRO ARQUIVO "SERVER.TS"
+
+    import express from 'express';
+    import mustache from 'mustache-express';
+    import path from 'path';
+    import dotenv from 'dotenv';
+
+    dotenv.config();
+
+    const server = express();
+
+    server.set('view engine', 'mustache');
+    server.set('views', path.join(__dirname, 'views'));
+    server.engine('mustache', mustache());
+
+    server.use(express.static(path.join(__dirname, '../public')));
+
+    // Rotas
+
+    server.listen(process.env.PORT);
